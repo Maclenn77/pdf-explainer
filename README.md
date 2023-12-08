@@ -24,5 +24,5 @@ Run streamlit run app.py
 
 - Streamlit
 - HuggingFace
-- Tika: For extracting pdf text
-- Java Runtime
+- pymupdf for pdf extraction
+- An open ai openapi key
