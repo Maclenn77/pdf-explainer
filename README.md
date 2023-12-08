@@ -14,9 +14,15 @@ An Intelligent Assistant that explains you the content of a PDF file
 
 ## Deployment 
 
-Deploy in HF with Streamlit
+Deploy in HF with Streamlit-
+
+## Local
+
+Run streamlit run app.py
 
 ## Stack
 
 - Streamlit
 - HuggingFace
+- Tika: For extracting pdf text
+- Java Runtime
