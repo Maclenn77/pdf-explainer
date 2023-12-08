@@ -6,7 +6,7 @@ colorTo: pink
 sdk: streamlit
 app_file: app.py
 pinned: false
-license: MIT
+license: mit
 ---
 
 # pdf-explainer
