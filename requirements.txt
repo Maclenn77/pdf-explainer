@@ -4,3 +4,4 @@ pdfminer
 chromadb
 sentence_transformers
 streamlit
+pylint
