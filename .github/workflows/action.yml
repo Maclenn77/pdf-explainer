@@ -8,6 +8,7 @@ on:               # or directly `on: [push]` to run the action on every push on 
 
 jobs:
   sync-to-hub:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Check large files
