@@ -1,5 +1,5 @@
 """An Langchain Agent that uses ChromaDB as a query tool"""
-from langchain.agents import AgentType, initialize_agent
+from langchain.agents import AgentType, initialize_agent, load_tools
 from langchain.tools import Tool
 from src.search import Search
 
@@ -7,7 +7,7 @@ from src.search import Search
 class PDFExplainer:
     """An Agent that uses ChromaDB as a query tool"""
 
-    def __init__(self, llm, chroma_db):
+    def __init__(self, llm, chroma_db, extra_tools=False):
         """Initialize the Agent"""
         search = Search(chroma_db)
 
@@ -15,10 +15,13 @@ class PDFExplainer:
             Tool.from_function(
                 func=search.run,
                 name="Search DB",
-                description="Useful when you need more context about a specific topic.",
+                description="Useful when you need more context for answering a question.",
                 handle_parsing_errors=True,
             )
         ]
+
+        if extra_tools:
+            self.tools.extend(load_tools(["wikipedia"]))
 
         self.agent = initialize_agent(
             self.tools,
