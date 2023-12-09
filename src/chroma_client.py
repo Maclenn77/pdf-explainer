@@ -13,6 +13,14 @@ class ChromaDB:
         self.api_key = api_key
         self.client.heartbeat()
 
+    def get_collection(self, name):
+        """Get a Chroma collection."""
+        try:
+            collection = self.client.get_collection(name=name)
+            return collection
+        except AttributeError:
+            return st.error("An error ocurred while getting the collection.")
+
     def create_collection(self, name):
         """Create a Chroma collection."""
         try:
