@@ -1,15 +1,16 @@
 """ A simple example of Streamlit. """
 from datetime import datetime as Date
 import textwrap
+import os
 import tiktoken
 import chromadb
 from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 import fitz
 import streamlit as st
 import openai
-import os
 from dotenv import load_dotenv
 from openai import OpenAI
+from langchain.vectorstores import Chroma
 
 load_dotenv()
 
@@ -94,3 +95,12 @@ if st.button("Delete Chroma Collection"):
         chroma_client.delete_collection(collection.name)
     except AttributeError:
         st.error("Collection erased.")
+
+if chroma_client.get_collection(collection.name) is not None:
+    langchain_agent = Chroma(client=chroma_client,
+                             collection_name=collection.name,
+                             embedding_function=embedding_function
+                             )
+     
+
+

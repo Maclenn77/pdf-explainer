@@ -1,4 +1,6 @@
 streamlit
 pymupdf
+openai
+tiktoken
 pylint
 chromadb>='0.4.18'
