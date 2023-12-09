@@ -2,6 +2,6 @@ streamlit
 pymupdf
 openai
 tiktoken
-pylint}
+pylint
 langchain
 chromadb>='0.4.18'
