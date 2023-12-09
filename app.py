@@ -17,21 +17,33 @@ chroma_client = chromadb.PersistentClient(path="tmp/chroma")
 chroma_client.heartbeat()
 
 
+def api_message(api_key):
+    """Inform if the api key is set."""
+    if api_key is None:
+        return st.warning("Add your OpenAI API key")
+
+    return st.success("Your API key is setup ")
+
+
 def set_api_key():
     """Set the OpenAI API key."""
     openai.api_key = st.session_state.api_key
-    st.write("Your API key is setup ")
+    st.session_state.api_message = api_message(openai.api_key)
 
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+if "api_message" not in st.session_state:
+    st.session_state.api_message = api_message(openai.api_key)
+
 if os.getenv("OPENAI_API_KEY") is None:
-    st.warning("Add your OpenAI API key")
+    message = st.session_state.api_message
     openai.api_key = st.text_input(
         "Enter your OpenAI API key",
         value="",
         type="password",
         key="api_key",
+        placeholder="Enter your OpenAI API key",
         on_change=set_api_key,
         label_visibility="collapsed",
     )
@@ -54,7 +66,9 @@ else:
 
 
 # Query ChromaDb
-query = st.text_input("Query ChromaDb", value="", placeholder="Enter query")
+query = st.text_input(
+    "Query ChromaDb", value="", placeholder="Enter query", label_visibility="collapsed"
+)
 if st.button("Search"):
     results = collection.query(
         query_texts=[query],
