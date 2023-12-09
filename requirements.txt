@@ -3,6 +3,6 @@ tiktoken
 langchain
 pymupdf
 pypdf
-chromadb
+chromadb>='0.4.18'
 sentence_transformers
 streamlit

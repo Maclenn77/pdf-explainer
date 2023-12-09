@@ -1,4 +1,7 @@
 streamlit
 pymupdf
+openai
+tiktoken
 pylint
-chromadb
+langchain
+chromadb>='0.4.18'
