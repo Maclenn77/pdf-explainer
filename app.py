@@ -1,6 +1,7 @@
 """ A simple example of Streamlit. """
 from datetime import datetime as Date
-import fitz, chromadb
+import chromadb
+import fitz
 import streamlit as st
 
 # from openai import OpenAI
