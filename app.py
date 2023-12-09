@@ -50,7 +50,8 @@ chroma_db = ChromaDB(openai.api_key)
 openai_client, collection = settings.build(chroma_db)
 
 # Create Agent
-llm = ChatOpenAI(temperature=0.9, model="gpt-3.5-turbo-16k", api_key=openai.api_key)
+openai_api_key = openai.api_key
+llm = ChatOpenAI(temperature=0.9, model="gpt-3.5-turbo-16k", api_key=openai_api_key)
 agent = PDFExplainer(llm, chroma_db).agent
 
 # Main
