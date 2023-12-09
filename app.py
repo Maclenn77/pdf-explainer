@@ -13,24 +13,45 @@ from openai import OpenAI
 
 load_dotenv()
 
-if os.getenv("OPENAI_API_KEY") is None:
-    st.error("Please set OPENAI_API_KEY environment variable")
-    st.stop()
-else:
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-
-client = OpenAI()
-embedding_function = OpenAIEmbeddingFunction(
-    api_key=openai.api_key, model_name="text-embedding-ada-002"
-)
-# from openai import OpenAI
-
 chroma_client = chromadb.PersistentClient(path="tmp/chroma")
 chroma_client.heartbeat()
 
-collection = chroma_client.get_or_create_collection(
-    name="pdf-explainer", embedding_function=embedding_function
-)
+
+def set_api_key():
+    """Set the OpenAI API key."""
+    openai.api_key = st.session_state.api_key
+    st.write("Your API key is setup ")
+
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+if os.getenv("OPENAI_API_KEY") is None:
+    st.warning("Add your OpenAI API key")
+    openai.api_key = st.text_input(
+        "Enter your OpenAI API key",
+        value="",
+        type="password",
+        key="api_key",
+        on_change=set_api_key,
+        label_visibility="collapsed",
+    )
+    st.write("You can find your API key at https://beta.openai.com/account/api-keys")
+    client = OpenAI(api_key=openai.api_key)
+    embedding_function = OpenAIEmbeddingFunction(
+        api_key=openai.api_key, model_name="text-embedding-ada-002"
+    )
+    collection = chroma_client.get_or_create_collection(
+        name="pdf-explainer", embedding_function=embedding_function
+    )
+else:
+    client = OpenAI()
+    embedding_function = OpenAIEmbeddingFunction(
+        api_key=openai.api_key, model_name="text-embedding-ada-002"
+    )
+    collection = chroma_client.get_or_create_collection(
+        name="pdf-explainer", embedding_function=embedding_function
+    )
+
 
 # Query ChromaDb
 query = st.text_input("Query ChromaDb", value="", placeholder="Enter query")
@@ -42,7 +63,7 @@ if st.button("Search"):
 
     for idx, result in enumerate(results["documents"][0]):
         st.markdown(
-            result[0:150]
+            result
             + "..."
             + "**Source:** "
             + results["metadatas"][0][idx]["source"]
@@ -65,7 +86,7 @@ if pdf is not None:
             )
         if st.button("Save chunks"):
             with st.spinner("Saving chunks..."):
-                chunks = textwrap.wrap(text, 24000)
+                chunks = textwrap.wrap(text, 3000)
                 for idx, chunk in enumerate(chunks):
                     encoding = tiktoken.get_encoding("cl100k_base")
                     num_tokens = len(encoding.encode(chunk))
@@ -85,7 +106,6 @@ if pdf is not None:
 else:
     st.write("Please upload a file of type: pdf")
 
-
 if st.button("Chroma data collection"):
     st.write(collection)
 
@@ -94,4 +114,3 @@ if st.button("Delete Chroma Collection"):
         chroma_client.delete_collection(collection.name)
     except AttributeError:
         st.error("Collection erased.")
-        
