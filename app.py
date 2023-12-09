@@ -94,6 +94,3 @@ if st.button("Delete Chroma Collection"):
         chroma_client.delete_collection(collection.name)
     except AttributeError:
         st.error("Collection erased.")
-     
-
-
