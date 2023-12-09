@@ -6,9 +6,14 @@ import fitz
 import streamlit as st
 import openai
 from dotenv import load_dotenv
+from langchain.chat_models import ChatOpenAI
+from langchain.callbacks import StreamlitCallbackHandler
 from src.chroma_client import ChromaDB
 import src.gui_messages as gm
 from src import settings
+
+from src.agent import PDFExplainer
+
 
 load_dotenv()
 
@@ -44,27 +49,14 @@ with st.sidebar:
 chroma_db = ChromaDB(openai.api_key)
 openai_client, collection = settings.build(chroma_db)
 
-# Query ChromaDb
-query = st.text_input(
-    "Query ChromaDb", value="", placeholder="Enter query", label_visibility="collapsed"
-)
-if st.button("Search"):
-    results = collection.query(
-        query_texts=[query],
-        n_results=3,
-    )
+# Create Agent
+llm = ChatOpenAI(temperature=0.9, model="gpt-3.5-turbo-16k")
+agent = PDFExplainer(llm, chroma_db).agent
 
-    for idx, result in enumerate(results["documents"][0]):
-        st.markdown(
-            result
-            + "..."
-            + "**Source:** "
-            + results["metadatas"][0][idx]["source"]
-            + " **Tokens:** "
-            + str(results["metadatas"][0][idx]["num_tokens"])
-        )
-
-
+# Main
+st.title("PDF Explainer")
+st.subheader("Create your knowledge base")
+st.write("Upload PDF files that will help the AI Agent to understand your domain.")
 pdf = st.file_uploader("Upload a file", type="pdf")
 
 if pdf is not None:
@@ -75,19 +67,11 @@ if pdf is not None:
         st.write(text[0:300] + "...")
         if st.button("Save chunks"):
             with st.spinner("Saving chunks..."):
-                chunks = textwrap.wrap(text, 3000)
+                chunks = textwrap.wrap(text, 1250)
                 for idx, chunk in enumerate(chunks):
                     encoding = tiktoken.get_encoding("cl100k_base")
                     num_tokens = len(encoding.encode(chunk))
-                    response = (
-                        openai_client.embeddings.create(
-                            input=chunk, model="text-embedding-ada-002"
-                        )
-                        .data[0]
-                        .embedding
-                    )
                     collection.add(
-                        embeddings=[response],
                         documents=[chunk],
                         metadatas=[{"source": pdf.name, "num_tokens": num_tokens}],
                         ids=[pdf.name + str(idx)],
@@ -95,11 +79,21 @@ if pdf is not None:
 else:
     st.write("Please upload a file of type: pdf")
 
-if st.button("Chroma data collection"):
-    st.write(collection)
+st.subheader("Search your knowledge base")
+# if st.button("Chroma data collection"):
+#     st.write(collection)
 
-if st.button("Delete Chroma Collection"):
-    try:
-        chroma_db.client.delete_collection(collection.name)
-    except AttributeError:
-        st.error("Collection erased.")
+# if st.button("Delete Chroma Collection"):
+#     try:
+#         chroma_db.client.delete_collection(collection.name)
+#     except AttributeError:
+#         st.error("Collection erased.")
+
+prompt = st.chat_input()
+
+if prompt:
+    st.chat_message("user").write(prompt)
+    with st.chat_message("assistant"):
+        st_callback = StreamlitCallbackHandler(st.container())
+        response = agent.run(prompt, callbacks=[st_callback])
+        st.write(response)
