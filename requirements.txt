@@ -1,6 +1,8 @@
 openai
+tiktoken
 langchain
 pymupdf
+pypdf
 chromadb
 sentence_transformers
 streamlit

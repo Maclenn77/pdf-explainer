@@ -24,5 +24,6 @@ Run streamlit run app.py
 
 - Streamlit
 - HuggingFace
+- ChromaDB
 - pymupdf for pdf extraction
 - An open ai openapi key
