@@ -21,8 +21,8 @@ def api_message(api_key):
     """Inform if the api key is set."""
     if api_key is None:
         return st.warning("Add your OpenAI API key")
-    else:
-        return st.success("Your API key is setup ")
+
+    return st.success("Your API key is setup ")
 
 
 def set_api_key():
