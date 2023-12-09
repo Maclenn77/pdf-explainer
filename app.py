@@ -79,7 +79,7 @@ if pdf is not None:
 else:
     st.write("Please upload a file of type: pdf")
 
-st.subheader("Search your knowledge base")
+st.subheader("Search on your knowledge base")
 # if st.button("Chroma data collection"):
 #     st.write(collection)
 
