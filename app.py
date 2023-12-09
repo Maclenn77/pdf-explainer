@@ -1,45 +1,34 @@
 """ A simple example of Streamlit. """
-from datetime import datetime as Date
 import textwrap
 import os
 import tiktoken
-import chromadb
-from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 import fitz
 import streamlit as st
 import openai
 from dotenv import load_dotenv
-from openai import OpenAI
+from src.chroma_client import ChromaDB
+import src.gui_messages as gm
+from src import settings
 
 load_dotenv()
-
-chroma_client = chromadb.PersistentClient(path="tmp/chroma")
-chroma_client.heartbeat()
-
-
-def api_message(api_key):
-    """Inform if the api key is set."""
-    if api_key is None:
-        return st.warning("Add your OpenAI API key")
-
-    return st.success("Your API key is setup ")
 
 
 def set_api_key():
     """Set the OpenAI API key."""
     openai.api_key = st.session_state.api_key
-    st.session_state.api_message = api_message(openai.api_key)
+    st.session_state.api_message = gm.api_message(openai.api_key)
 
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 if "api_message" not in st.session_state:
-    st.session_state.api_message = api_message(openai.api_key)
+    st.session_state.api_message = gm.api_message(openai.api_key)
 
-if os.getenv("OPENAI_API_KEY") is None:
-    message = st.session_state.api_message
+# Sidebar
+with st.sidebar:
+    st.write("## OpenAI API key")
     openai.api_key = st.text_input(
-        "Enter your OpenAI API key",
+        "Enter OpenAI API key",
         value="",
         type="password",
         key="api_key",
@@ -47,23 +36,13 @@ if os.getenv("OPENAI_API_KEY") is None:
         on_change=set_api_key,
         label_visibility="collapsed",
     )
-    st.write("You can find your API key at https://beta.openai.com/account/api-keys")
-    client = OpenAI(api_key=openai.api_key)
-    embedding_function = OpenAIEmbeddingFunction(
-        api_key=openai.api_key, model_name="text-embedding-ada-002"
-    )
-    collection = chroma_client.get_or_create_collection(
-        name="pdf-explainer", embedding_function=embedding_function
-    )
-else:
-    client = OpenAI()
-    embedding_function = OpenAIEmbeddingFunction(
-        api_key=openai.api_key, model_name="text-embedding-ada-002"
-    )
-    collection = chroma_client.get_or_create_collection(
-        name="pdf-explainer", embedding_function=embedding_function
+    st.write(
+        "You can find your API key at https://platform.openai.com/account/api-keys"
     )
 
+# Build settings
+chroma_db = ChromaDB(openai.api_key)
+openai_client, collection = settings.build(chroma_db)
 
 # Query ChromaDb
 query = st.text_input(
@@ -90,14 +69,10 @@ pdf = st.file_uploader("Upload a file", type="pdf")
 
 if pdf is not None:
     with fitz.open(stream=pdf.read(), filetype="pdf") as doc:  # open document
-        text = chr(12).join([page.get_text() for page in doc])
-        st.write(text[0:200])
-        if st.button("Add to collection"):
-            collection.add(
-                documents=[text],
-                metadatas=[{"source": pdf.name}],
-                ids=[pdf.name + str(Date.now())],
-            )
+        with st.spinner("Extracting text..."):
+            text = chr(12).join([page.get_text() for page in doc])
+        st.subheader("Text preview")
+        st.write(text[0:300] + "...")
         if st.button("Save chunks"):
             with st.spinner("Saving chunks..."):
                 chunks = textwrap.wrap(text, 3000)
@@ -105,7 +80,7 @@ if pdf is not None:
                     encoding = tiktoken.get_encoding("cl100k_base")
                     num_tokens = len(encoding.encode(chunk))
                     response = (
-                        client.embeddings.create(
+                        openai_client.embeddings.create(
                             input=chunk, model="text-embedding-ada-002"
                         )
                         .data[0]
@@ -125,6 +100,6 @@ if st.button("Chroma data collection"):
 
 if st.button("Delete Chroma Collection"):
     try:
-        chroma_client.delete_collection(collection.name)
+        chroma_db.client.delete_collection(collection.name)
     except AttributeError:
         st.error("Collection erased.")
