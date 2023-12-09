@@ -1,10 +1,10 @@
+"""Build settings for the app."""
 from src.openai_client import create_client
-from src.collection_creator import create_collection
 
 
-def build(chroma_client, api_key=None):
+def build(chroma_db):
     """Build the app."""
-    client = create_client(api_key=api_key)
-    collection = create_collection(chroma_client, api_key=api_key)
+    openai_client = create_client(chroma_db.api_key)
+    collection = chroma_db.create_collection("pdf-explainer")
 
-    return client, collection
+    return openai_client, collection

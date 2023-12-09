@@ -1,5 +1,4 @@
 """ A simple example of Streamlit. """
-from datetime import datetime as Date
 import textwrap
 import os
 import tiktoken
@@ -9,7 +8,7 @@ import openai
 from dotenv import load_dotenv
 from src.chroma_client import ChromaDB
 import src.gui_messages as gm
-import src.settings as settings
+from src import settings
 
 load_dotenv()
 
@@ -42,8 +41,8 @@ with st.sidebar:
     )
 
 # Build settings
-chroma_client = ChromaDB().client
-client, collection = settings.build(chroma_client, api_key=openai.api_key)
+chroma_db = ChromaDB(openai.api_key)
+openai_client, collection = settings.build(chroma_db)
 
 # Query ChromaDb
 query = st.text_input(
@@ -81,7 +80,7 @@ if pdf is not None:
                     encoding = tiktoken.get_encoding("cl100k_base")
                     num_tokens = len(encoding.encode(chunk))
                     response = (
-                        client.embeddings.create(
+                        openai_client.embeddings.create(
                             input=chunk, model="text-embedding-ada-002"
                         )
                         .data[0]
@@ -101,6 +100,6 @@ if st.button("Chroma data collection"):
 
 if st.button("Delete Chroma Collection"):
     try:
-        chroma_client.delete_collection(collection.name)
+        chroma_db.client.delete_collection(collection.name)
     except AttributeError:
         st.error("Collection erased.")
