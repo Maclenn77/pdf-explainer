@@ -10,7 +10,6 @@ import streamlit as st
 import openai
 from dotenv import load_dotenv
 from openai import OpenAI
-from langchain.vectorstores import Chroma
 
 load_dotenv()
 
@@ -95,12 +94,6 @@ if st.button("Delete Chroma Collection"):
         chroma_client.delete_collection(collection.name)
     except AttributeError:
         st.error("Collection erased.")
-
-if chroma_client.get_collection(collection.name) is not None:
-    langchain_agent = Chroma(client=chroma_client,
-                             collection_name=collection.name,
-                             embedding_function=embedding_function
-                             )
      
 
 
