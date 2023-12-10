@@ -37,7 +37,7 @@ if "api_message" not in st.session_state:
 
 # Build settings
 chroma_db = ChromaDB(openai.api_key)
-openai_client, collection = settings.build(chroma_db)
+collection = settings.build(chroma_db)
 
 # Sidebar
 with st.sidebar:
@@ -84,11 +84,11 @@ st.title("GnosisPages")
 st.subheader("Create your knowledge base")
 
 ## Uploader
-container = st.container()
-container.write(
+
+st.write(
     "Upload, extract and consult the content of PDF Files for builiding your knowledge base!"
 )
-pdf = container.file_uploader("Upload a file", type="pdf")
+pdf = st.file_uploader("Upload a file", type="pdf")
 
 if pdf is not None:
     with fitz.open(stream=pdf.read(), filetype="pdf") as doc:  # open document
@@ -108,13 +108,12 @@ if pdf is not None:
                         ids=[pdf.name + str(idx)],
                     )
 else:
-    container.write("Please upload a file of type: pdf")
+    st.write("Please upload a file of type: pdf")
 
 st.subheader("Consult your knowledge base")
 
-chatbox = st.container()
 
-prompt = chatbox.chat_input()
+prompt = st.chat_input()
 
 if prompt:
     # Create Agent
@@ -133,8 +132,8 @@ if prompt:
     except Exception:  # pylint: disable=broad-exception-caught
         st.warning("Missing OpenAI API Key.")
 
-    chatbox.chat_message("user").write(prompt)
-    with chatbox.chat_message("assistant"):
+    st.chat_message("user").write(prompt)
+    with st.chat_message("assistant"):
         st_callback = StreamlitCallbackHandler(st.container())
         response = agent.run(prompt, callbacks=[st_callback])
-        chatbox.write(response)
+        st.write(response)

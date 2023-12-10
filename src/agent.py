@@ -14,7 +14,7 @@ class PDFExplainer:
         self.tools = [
             Tool.from_function(
                 func=search.run,
-                name="Search DB",
+                name="Search on ChromaDB",
                 description="Useful when you need more context for answering a question.",
                 handle_parsing_errors=True,
             )
