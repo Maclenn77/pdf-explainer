@@ -1,5 +1,5 @@
 ---
-title: PDF Explainer
+title: GnosisPages
 emoji: 📝
 colorFrom: red
 colorTo: pink
@@ -9,21 +9,21 @@ pinned: false
 license: mit
 ---
 
-# PDF Explainer
-PDF Explainer is a tool that helps you to create your own knowledge base for retrieval information when interacting with a LLM. The app take advantage of the frameworks Streamlit and Langchain and uses a client-side ChromaDB.
+# GnosisPages
+GnosisPages is a tool that helps you to create your own knowledge base for retrieval information when interacting with a LLM. The app take advantage of the frameworks Streamlit and Langchain and uses a client-side ChromaDB.
 
 ## Features
 
-PDF Explainer offers you the following key features:
+GnosisPages offers you the following key features:
 
 - **Upload PDF files**: Upload PDF files until 200MB size. PDF files should be programmatically created or processed by an OCR tool.
 - **Extract and split text**: Extract the content of your PDF files and split them for a better querying.
-- **Store in a client-side VectorDB**: PDF Explainer uses ChromaDB for storing the content of your pdf files on vectors (ChromaDB use by default "all-MiniLM-L6-v2" for embeddings)
+- **Store in a client-side VectorDB**: GnosisPages uses ChromaDB for storing the content of your pdf files on vectors (ChromaDB use by default "all-MiniLM-L6-v2" for embeddings)
 - **Consult the info of your knowledge base": Ask questions to the Intelligent Assitant about the content of your knowledge base. The Langchain Agent will use the ChromaDB query functions as a tool.
 
 ## Demo 
 
-[Try the PDF Explainer's demo](https://huggingface.co/spaces/maclenn77/pdf-explainer)!!!
+[Try the GnosisPages's demo](https://huggingface.co/spaces/maclenn77/pdf-explainer)!!!
 
 ## Prerrequisites
 
@@ -40,7 +40,7 @@ If you prefer to clone the project and run on your local environment, you will r
 
 ## Setup
 
-Follow the next steps to set up PDF Explainer in your local environment:
+Follow the next steps to set up GnosisPages in your local environment:
 
 1. Clone this repository
 
@@ -72,7 +72,7 @@ Follow the next steps to set up PDF Explainer in your local environment:
 
 ## Deployment
 
-PDF Explainer's repo includes workflows for deploying to HuggingFace. 
+GnosisPages's repo includes workflows for deploying to HuggingFace. 
 
 1. **Check file size**: Prevents you to merge and deploy files over the limit provided by HuggingFace 🤗.
 2. **Check lints**: Analize the code with pylint.
@@ -81,11 +81,11 @@ PDF Explainer's repo includes workflows for deploying to HuggingFace.
 For deploying, you need to add `HF_TOKEN` as secret in the settings of your fork and add yoyr HuggingFace user with the variable name `HF_USERNAME`.
 
 ## Feedback and Contributions
-If you have any feedback or would like to contribute to PDF Explainer's development, please feel free to open issues or submit pull requests in the GitHub repository.
+If you have any feedback or would like to contribute to GnosisPages's development, please feel free to open issues or submit pull requests in the GitHub repository.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
-Enjoy using PDF Explainer to create and consult your knowled base! If you have any questions or encounter issues during the setup process, please don't hesitate to reach out for assistance.
+Enjoy using GnosisPages to create and consult your knowled base! If you have any questions or encounter issues during the setup process, please don't hesitate to reach out for assistance.
