@@ -25,6 +25,8 @@ GnosisPages offers you the following key features:
 
 [Try the GnosisPages's demo](https://huggingface.co/spaces/maclenn77/pdf-explainer)!!!
 
+[Watch a demo here](https://youtu.be/OEQTusJGHFQ)
+
 ## Prerrequisites
 
 For using the demo, you only need an OpenAI API Key.
