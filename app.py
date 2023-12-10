@@ -24,6 +24,11 @@ def set_api_key():
     st.session_state.api_message = gm.api_message(openai.api_key)
 
 
+def click_wk_button():
+    """Set the OpenAI API key."""
+    st.session_state.wk_button = not st.session_state.wk_button
+
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 if "api_message" not in st.session_state:
@@ -44,15 +49,27 @@ with st.sidebar:
     st.write(
         "You can find your API key at https://platform.openai.com/account/api-keys"
     )
+    if "wk_button" not in st.session_state:
+        st.session_state.wk_button = False
+
+    st.checkbox(
+        "Use Wikipedia", on_change=click_wk_button, value=st.session_state.wk_button
+    )
+    st.subheader("Creativity")
+    st.write("The higher the value, the crazier the text.")
+    st.slider(
+        "Temperature",
+        min_value=0.0,
+        max_value=2.0,
+        value=0.9,
+        step=0.01,
+        key="temperature",
+    )
+
 
 # Build settings
 chroma_db = ChromaDB(openai.api_key)
 openai_client, collection = settings.build(chroma_db)
-
-# Create Agent
-openai_api_key = openai.api_key
-llm = ChatOpenAI(temperature=0.9, model="gpt-3.5-turbo-16k", api_key=openai_api_key)
-agent = PDFExplainer(llm, chroma_db).agent
 
 # Main
 st.title("PDF Explainer")
@@ -81,18 +98,26 @@ else:
     st.write("Please upload a file of type: pdf")
 
 st.subheader("Search on your knowledge base")
-# if st.button("Chroma data collection"):
-#     st.write(collection)
-
-# if st.button("Delete Chroma Collection"):
-#     try:
-#         chroma_db.client.delete_collection(collection.name)
-#     except AttributeError:
-#         st.error("Collection erased.")
 
 prompt = st.chat_input()
 
 if prompt:
+    # Create Agent
+    try:
+        openai_api_key = openai.api_key
+        llm = ChatOpenAI(
+            temperature=st.session_state.temperature,
+            model="gpt-3.5-turbo-16k",
+            api_key=openai.api_key,
+        )
+        agent = PDFExplainer(
+            llm,
+            chroma_db,
+            extra_tools=st.session_state.wk_button,
+        ).agent
+    except Exception:  # pylint: disable=broad-exception-caught
+        st.warning("Missing OpenAI API Key.")
+
     st.chat_message("user").write(prompt)
     with st.chat_message("assistant"):
         st_callback = StreamlitCallbackHandler(st.container())

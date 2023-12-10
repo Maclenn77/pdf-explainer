@@ -3,6 +3,7 @@ tiktoken
 langchain
 pymupdf
 pypdf
+duckduckgo-search
 chromadb>='0.4.18'
 sentence_transformers
 streamlit
