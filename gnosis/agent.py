@@ -1,7 +1,7 @@
 """An Langchain Agent that uses ChromaDB as a query tool"""
 from langchain.agents import AgentType, initialize_agent, load_tools
 from langchain.tools import Tool
-from src.search import Search
+from gnosis.search import Search
 
 
 class PDFExplainer:
