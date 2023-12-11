@@ -3,6 +3,7 @@ import streamlit as st
 
 
 def header():
+    """A header"""
     st.title("GnosisPages")
     st.subheader("Create your knowledge base")
 
