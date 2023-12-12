@@ -27,6 +27,10 @@ GnosisPages offers you the following key features:
 
 [Watch a demo here](https://youtu.be/OEQTusJGHFQ)
 
+## Architecture
+
+![schematic-1](https://github.com/Maclenn77/pdf-explainer/assets/1808402/36dbacfa-43f3-4530-9d31-0e9b1127f992)
+
 ## Prerrequisites
 
 For using the demo, you only need an OpenAI API Key.
