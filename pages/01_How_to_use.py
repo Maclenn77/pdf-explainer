@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 """Instructions on how to use the website"""
 import streamlit as st
 

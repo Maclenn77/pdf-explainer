@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 """ A Streamlit app for GnosisPages. """
 import os
 import streamlit as st

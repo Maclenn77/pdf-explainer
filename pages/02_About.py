@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 """Collection's Page"""
 import streamlit as st
 import openai
