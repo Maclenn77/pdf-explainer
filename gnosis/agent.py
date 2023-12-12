@@ -27,7 +27,7 @@ class PDFExplainer:
             self.tools,
             llm,
             agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-            verbose=True,
+            verbose=False,
             handle_parsing_errors=True,
         )
 
@@ -41,6 +41,6 @@ class PDFExplainer:
             self.tools,
             llm,
             agent=agent,
-            verbose=True,
+            verbose=False,
             handle_parsing_errors=True,
         )
