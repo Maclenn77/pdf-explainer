@@ -4,7 +4,7 @@ emoji: 📝
 colorFrom: red
 colorTo: pink
 sdk: streamlit
-app_file: app.py
+app_file: GnosisPages.py
 pinned: false
 license: mit
 ---
@@ -73,7 +73,7 @@ Follow the next steps to set up GnosisPages in your local environment:
 ```
 6. Run on your local environment
 ```bash
-   streamlit run app.py
+   streamlit run GnosisPages.py
 ```
 
 ## Deployment
