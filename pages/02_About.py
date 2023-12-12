@@ -10,7 +10,8 @@ st.header("About")
 # A summary of the project
 st.write(
     """
-    GnosisPages was developed by [J.P. Pérez Tejada](https://www.linkedin.com/in/juanpaulopereztejada/). December, 2023.
+    GnosisPages was developed by
+    [J.P. Pérez Tejada](https://www.linkedin.com/in/juanpaulopereztejada/). December, 2023.
     
     
     Check the [GitHub repository](https://github.com/maclenn77/pdf-explainer) for more information.
