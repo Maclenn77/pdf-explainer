@@ -8,7 +8,6 @@ def build(key, client):
     """An Agent builder"""
     # Build Agent
     try:
-        print(str(st.session_state.temperature))
         llm = ChatOpenAI(
             temperature=st.session_state.temperature,
             model="gpt-3.5-turbo-16k",

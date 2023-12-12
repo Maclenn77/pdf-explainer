@@ -8,11 +8,11 @@ def delete_collection(client, collection):
     """Delete collection button."""
     if st.button("Delete collection"):
         st.warning("Are you sure?")
-    if st.button("Yes"):
-        try:
-            client.delete_collection(collection.name)
-        except AttributeError:
-            st.error("Collection erased.")
+        if st.button("Yes"):
+            try:
+                client.delete_collection(collection.name)
+            except AttributeError:
+                st.error("Collection erased.")
 
 
 def openai_api_key_box():
