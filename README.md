@@ -4,7 +4,7 @@ emoji: 📝
 colorFrom: red
 colorTo: pink
 sdk: streamlit
-app_file: app.py
+app_file: GnosisPages.py
 pinned: false
 license: mit
 ---
@@ -26,6 +26,10 @@ GnosisPages offers you the following key features:
 [Try the GnosisPages's demo](https://huggingface.co/spaces/maclenn77/pdf-explainer)!!!
 
 [Watch a demo here](https://youtu.be/OEQTusJGHFQ)
+
+## Architecture
+
+![schematic-1](https://github.com/Maclenn77/pdf-explainer/assets/1808402/36dbacfa-43f3-4530-9d31-0e9b1127f992)
 
 ## Prerrequisites
 
@@ -69,7 +73,7 @@ Follow the next steps to set up GnosisPages in your local environment:
 ```
 6. Run on your local environment
 ```bash
-   streamlit run app.py
+   streamlit run GnosisPages.py
 ```
 
 ## Deployment
