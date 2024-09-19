@@ -1,9 +1,10 @@
 openai
 tiktoken
 langchain
+langchain_openai
 pymupdf
 pypdf
 wikipedia
-chromadb>='0.4.18'
+chromadb
 sentence_transformers
 streamlit
