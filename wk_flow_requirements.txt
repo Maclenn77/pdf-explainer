@@ -4,4 +4,4 @@ openai
 tiktoken
 pylint
 langchain
-chromadb>='0.4.18'
+chromadb
