@@ -10,7 +10,7 @@ def build(key, client):
     try:
         llm = ChatOpenAI(
             temperature=st.session_state.temperature,
-            model="gpt-3.5-turbo-16k",
+            model="gpt-4o-mini",
             api_key=key,
         )
         agent = PDFExplainer(
