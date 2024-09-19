@@ -4,4 +4,5 @@ openai
 tiktoken
 pylint
 langchain
+angchain_openai
 chromadb
