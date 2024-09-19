@@ -1,6 +1,7 @@
 openai
 tiktoken
 langchain
+langchain_openai
 pymupdf
 pypdf
 wikipedia
