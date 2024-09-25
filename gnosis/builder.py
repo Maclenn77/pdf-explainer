@@ -1,6 +1,6 @@
 """Module for building the Langchain Agent"""
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from gnosis.agent import PDFExplainer
 
 
