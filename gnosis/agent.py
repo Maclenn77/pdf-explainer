@@ -14,7 +14,7 @@ class PDFExplainer:
         self.tools = [
             Tool.from_function(
                 func=search.run,
-                name="Search on ChromaDB",
+                name="Search_on_ChromaDB",
                 description="Useful when you need more context for answering a question.",
                 handle_parsing_errors=True,
             )
@@ -26,7 +26,8 @@ class PDFExplainer:
         self.agent = initialize_agent(
             self.tools,
             llm,
-            agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+            #agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+            agent=AgentType.OPENAI_FUNCTIONS,  # ← uses OpenAI's native function calling
             verbose=False,
             handle_parsing_errors=True,
         )

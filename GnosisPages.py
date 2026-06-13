@@ -3,16 +3,15 @@
 import os
 import streamlit as st
 import openai
-from dotenv import load_dotenv
 from gnosis.chroma_client import ChromaDB
 import gnosis.gui_messages as gm
 from gnosis import settings
 from gnosis.components.sidebar import sidebar
 from gnosis.components.main import main
+from pathlib import Path
+from dotenv import load_dotenv
 
-
-load_dotenv()
-
+load_dotenv(Path(__file__).parent / ".env")
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
