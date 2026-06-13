@@ -4,8 +4,6 @@ emoji: 📚
 colorFrom: blue
 colorTo: green
 sdk: docker
-sdk_version: "1.58.0"
-python_version: "3.11"
 pinned: false
 ---
 
