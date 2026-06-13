@@ -1,15 +1,17 @@
 # pylint: disable=invalid-name
 """ A Streamlit app for GnosisPages. """
 import os
-import streamlit as st
+from pathlib import Path
+
 import openai
+import streamlit as st
+from dotenv import load_dotenv
+
 from gnosis.chroma_client import ChromaDB
 import gnosis.gui_messages as gm
 from gnosis import settings
 from gnosis.components.sidebar import sidebar
 from gnosis.components.main import main
-from pathlib import Path
-from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).parent / ".env")
 
