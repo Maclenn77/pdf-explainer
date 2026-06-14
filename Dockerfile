@@ -23,12 +23,8 @@ WORKDIR $HOME/app
 COPY . $HOME/app
 
 RUN mkdir -p $HOME/app/tmp/chroma
+RUN chmod +x $HOME/app/entrypoint.sh
 
 EXPOSE 8501
 
-CMD streamlit run GnosisPages.py \
-    --server.headless true \
-    --server.enableCORS false \
-    --server.enableXsrfProtection false \
-    --server.fileWatcherType none \
-    --server.port 8501
+CMD ["bash", "/home/user/app/entrypoint.sh"]
