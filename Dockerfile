@@ -12,18 +12,21 @@ RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Create non-root user (required by HF)
 RUN useradd -m -u 1000 user
+
+# Set up application directory and permissions
+COPY . /home/user/app
+
+RUN chmod +x /home/user/app/entrypoint.sh
+RUN chown -R user /home/user/app
+
+# Switch to non-root user
 USER user
 ENV HOME=/home/user
 ENV PATH=$HOME/.local/bin:$PATH
 
-WORKDIR $HOME
-RUN mkdir app
 WORKDIR $HOME/app
 
-COPY . $HOME/app
-
 RUN mkdir -p $HOME/app/tmp/chroma
-RUN chmod +x $HOME/app/entrypoint.sh
 
 EXPOSE 8501
 
