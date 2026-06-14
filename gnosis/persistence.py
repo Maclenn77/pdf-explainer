@@ -1,6 +1,7 @@
-# Use this module to pull persisted ChromaDB from Hugging Face Dataset on startup.
+"""Persistence utilities for Gnosis."""
 import os
 from huggingface_hub import snapshot_download
+from huggingface_hub.errors import HfHubHTTPError, RepositoryNotFoundError
 
 REPO_ID = os.getenv("HF_DATASET_REPO")
 LOCAL_PATH = "tmp/chroma"
@@ -16,5 +17,5 @@ def pull():
             local_dir=LOCAL_PATH,
             token=os.getenv("HF_DATASET_TOKEN"),
         )
-    except Exception:
+    except (HfHubHTTPError, RepositoryNotFoundError):
         os.makedirs(LOCAL_PATH, exist_ok=True)
