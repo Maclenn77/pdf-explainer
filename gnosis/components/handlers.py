@@ -8,6 +8,8 @@ def set_api_key():
     """Set the OpenAI API key."""
     openai.api_key = st.session_state.api_key
     st.session_state.api_message = gm.api_message(openai.api_key)
+    if "chroma_db" in st.session_state:
+        st.session_state.chroma_db.set_api_key(openai.api_key)
 
 
 def click_wk_button():
