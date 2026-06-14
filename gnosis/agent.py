@@ -1,9 +1,10 @@
 """An Langchain Agent that uses ChromaDB as a query tool"""
 import os
+from pathlib import Path
 
 from langchain.agents import AgentType, initialize_agent, load_tools
 from langchain.tools import Tool
-from langchain.schema import SystemMessage 
+from langchain.schema import SystemMessage
 from gnosis.search import Search
 
 def load_system_prompt() -> SystemMessage:
