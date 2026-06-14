@@ -11,7 +11,7 @@ class Search:
     def run(self, query: str):
         """Run the Agent"""
         collection = self.chroma_db.get_collection("pdf-explainer")
-        results = collection.query(query_texts=[query], n_results=3)["documents"][0]
+        results = collection.query(query_texts=[query], n_results=5)["documents"][0]
         return "\n\n---\n\n".join(results)
 
     def collection_name(self):

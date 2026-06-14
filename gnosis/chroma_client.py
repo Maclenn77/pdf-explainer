@@ -1,7 +1,6 @@
 """A client for ChromaDB."""
 import chromadb
-
-# from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 import streamlit as st
 
 
@@ -12,12 +11,18 @@ class ChromaDB:
         """Initialize the client."""
         self.client = chromadb.PersistentClient(path=path)
         self.api_key = api_key
+        self.embedding_function = OpenAIEmbeddingFunction(
+            api_key=self.api_key, model_name="text-embedding-3-small"
+        )
         self.client.heartbeat()
 
     def get_collection(self, name):
         """Get a Chroma collection."""
         try:
-            collection = self.client.get_collection(name=name)
+            collection = self.client.get_collection(
+                name=name,
+                embedding_function=self.embedding_function
+            )
             return collection
         except AttributeError:
             return st.error("An error ocurred while getting the collection.")
@@ -25,11 +30,9 @@ class ChromaDB:
     def create_collection(self, name):
         """Create a Chroma collection."""
         try:
-            # embedding_function = OpenAIEmbeddingFunction(
-            #     api_key=self.api_key, model_name="text-embedding-ada-002"
-            # )
             collection = self.client.get_or_create_collection(
-                name=name  # , embedding_function=embedding_function
+                name=name,
+                embedding_function=self.embedding_function
             )
             return collection
         except AttributeError:
