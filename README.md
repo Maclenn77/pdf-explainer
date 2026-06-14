@@ -1,12 +1,11 @@
 ---
 title: GnosisPages
-emoji: 📝
-colorFrom: red
-colorTo: pink
-sdk: streamlit
-app_file: GnosisPages.py
+emoji: 📚
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8501
 pinned: false
-license: mit
 ---
 
 # GnosisPages
