@@ -1,6 +1,4 @@
 """Search Tool"""
-import streamlit as st
-
 
 class Search:
     """Search Tool"""
