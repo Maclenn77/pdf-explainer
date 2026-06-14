@@ -24,9 +24,11 @@ if "api_message" not in st.session_state:
 if "wk_button" not in st.session_state:
     st.session_state.wk_button = False
 
+if "chroma_db" not in st.session_state:
+    st.session_state.chroma_db = ChromaDB(openai.api_key)
 
 # Build settings
-chroma_db = ChromaDB(openai.api_key)
+chroma_db = st.session_state.chroma_db
 collection = settings.build(chroma_db)
 
 # Sidebar
